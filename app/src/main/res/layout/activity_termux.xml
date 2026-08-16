@@ -20,7 +20,7 @@
             android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
             android:layout_alignParentTop="true"
-            android:layout_above="@+id/terminal_toolbar_view_pager"
+            android:layout_above="@+id/terminal_toolbar_container"
             android:layout_height="match_parent">
 
             <com.termux.view.TerminalView
@@ -94,13 +94,52 @@
 
         </androidx.drawerlayout.widget.DrawerLayout>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/terminal_toolbar_view_pager"
+        <LinearLayout
+            android:id="@+id/terminal_toolbar_container"
             android:visibility="gone"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="37.5dp"
+            android:layout_height="wrap_content"
             android:background="@color/black"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true">
+
+            <!-- Metin girisi satiri: extra keys'in USTUNDE, terminale bitisik.
+                 Gizlenebilir (TEXTBAR ozel tusu ile). -->
+            <LinearLayout
+                android:id="@+id/terminal_toolbar_text_input_row"
+                android:visibility="gone"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#0d0d0d">
+
+                <!-- Terminal ile giris alanini ayiran ince cizgi. Material'in
+                     EditText alt cizgisi yerine bunu kullaniyoruz. -->
+                <View
+                    android:id="@+id/terminal_toolbar_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="#2a2a2a" />
+
+                <include layout="@layout/view_terminal_toolbar_text_input" />
+            </LinearLayout>
+
+            <!-- Tus takiminin ust cizgisi. Metin alaninin disinda durur, boylece metin alani
+                 kapaliyken de terminali tuslardan ayirir, acikken de ikisinin arasinda kalir. -->
+            <View
+                android:id="@+id/terminal_toolbar_separator_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#2a2a2a" />
+
+            <com.termux.shared.termux.extrakeys.ExtraKeysView
+                android:id="@+id/terminal_toolbar_extra_keys"
+                style="?android:attr/buttonBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="37.5dp"
+                android:orientation="horizontal" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

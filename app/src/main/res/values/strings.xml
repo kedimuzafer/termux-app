@@ -55,6 +55,10 @@
     <string name="action_toggle_soft_keyboard">Keyboard</string>
 
     <string name="msg_enabling_terminal_toolbar">Enabling Terminal Toolbar</string>
+    <string name="action_toolbar_text_input_send">Send</string>
+    <string name="action_rename_session">Rename session</string>
+    <string name="action_kill_session">Kill session</string>
+    <string name="title_confirm_kill_session">Really kill this session?</string>
     <string name="msg_disabling_terminal_toolbar">Disabling Terminal Toolbar</string>
 
 
