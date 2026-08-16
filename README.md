@@ -47,6 +47,33 @@ went straight to renaming, and there was no way at all to close a session from t
 
 <br clear="right" />
 
+### Download
+
+Prebuilt arm64 APKs are on the [releases page](https://github.com/kedimuzafer/termux-app/releases).
+
+**Read this before installing.** These are debug builds signed with `testkey_untrusted.jks`, the
+key committed in the Termux repo. That has consequences:
+
+- It is **not** the F-Droid or Play Store key. Android will refuse to install this over an existing
+  Termux from either, and the only way through is to uninstall first — **which erases `$HOME` and
+  every package you have installed**. Back up before you do anything.
+- The key is public, so anyone can sign an APK with it. Treat these builds as convenience, not as a
+  trusted distribution channel. Building from source yourself is the honest option, and it produces
+  a byte-for-byte compatible signature.
+- Because both this app and the Termux:Styling fork use that same key, the plugin works with this
+  build. A Styling APK from anywhere else will not install alongside it.
+
+If you do need to reinstall, back up from a host machine over adb. Note that Android's built-in
+`toybox tar` silently truncates the archive when it hits a socket — and `~/.ssh/agent/` usually has
+one — so use Termux's own GNU tar:
+
+```bash
+adb shell "run-as com.termux sh -c 'cd /data/data/com.termux && \
+  LD_LIBRARY_PATH=/data/data/com.termux/files/usr/lib \
+  files/usr/bin/tar --warning=no-file-ignored -cf backup.tar files'"
+adb exec-out run-as com.termux cat backup.tar > backup.tar
+```
+
 ### Building
 
 ```bash
