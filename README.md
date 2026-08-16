@@ -1,5 +1,67 @@
 # Termux application
 
+> ### About this fork
+>
+> A fork of [termux/termux-app](https://github.com/termux/termux-app) carrying the
+> `text-input-toolbar` branch, which reworks the terminal toolbar. The section below covers the
+> fork; the rest of this README is upstream's.
+
+## Toolbar changes
+
+<img src="docs/fork/toolbar.jpg" width="330" align="right" alt="Text input and extra keys shown together" />
+
+Upstream the terminal toolbar is a two page `ViewPager`: one page holds the extra keys, the other a
+text input. Switching pages means swiping horizontally — but the text input consumes horizontal
+touches to move the caret. With a long line in the field, getting back to the keys means first
+scrolling the caret all the way to the start of the text. Write a paragraph in there and it becomes
+a genuine chore.
+
+Here the two are stacked in a vertical `LinearLayout` and are **visible at the same time**, with the
+text input sitting directly above the extra keys, next to the terminal.
+
+**`TEXTBAR` special key.** Toggles the text input and moves focus with it. It behaves like the other
+special keys (`KEYBOARD`, `DRAWER`, `PASTE`), so you place it wherever you like in
+`termux.properties`:
+
+```properties
+extra-keys = [['ESC','/','TEXTBAR','HOME','UP','END','PGUP',{macro:"CTRL c",display:"^C"}], \
+              ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN',{macro:"CTRL SPACE",display:"^SP"}]]
+```
+
+It renders as `▤`.
+
+**Text input.** Multi line and monospace. Material's underline is replaced with hairline separators
+that match the terminal. Enter sends, which keeps a send button from eating horizontal space.
+
+**Follows the colour scheme.** The toolbar takes its background and foreground from the terminal's
+own colour scheme. Upstream the key labels are a fixed white, so they disappear against a light
+scheme.
+
+**Key labels scale.** Shrinking `terminal-toolbar-height` now shrinks the label text with the row,
+instead of leaving oversized labels crammed into a thin row.
+
+**Key grid.** Hairlines are drawn between the keys, derived from the colour scheme.
+
+**Killing sessions.** Long pressing a session in the drawer now offers *Rename* / *Kill*. Upstream it
+went straight to renaming, and there was no way at all to close a session from the drawer.
+
+<br clear="right" />
+
+### Building
+
+```bash
+./gradlew :app:assembleDebug -x lint
+adb install -r app/build/outputs/apk/debug/termux-app_apt-android-7-debug_arm64-v8a.apk
+```
+
+Plugin apps such as Termux:Styling must be signed with the **same key** as the main app. Building
+both from source with the repo's debug key makes them match. A companion fork that adds previews to
+the colour scheme and font lists lives at
+[kedimuzafer/termux-styling](https://github.com/kedimuzafer/termux-styling).
+
+***
+
+
 [![Build status](https://github.com/termux/termux-app/workflows/Build/badge.svg)](https://github.com/termux/termux-app/actions)
 [![Testing status](https://github.com/termux/termux-app/workflows/Unit%20tests/badge.svg)](https://github.com/termux/termux-app/actions)
 [![Join the chat at https://gitter.im/termux/termux](https://badges.gitter.im/termux/termux.svg)](https://gitter.im/termux/termux)
