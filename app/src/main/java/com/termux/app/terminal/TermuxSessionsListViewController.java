@@ -1,6 +1,7 @@
 package com.termux.app.terminal;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -16,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 import com.termux.R;
@@ -127,10 +127,8 @@ public class TermuxSessionsListViewController extends ArrayAdapter<TermuxSession
     private void confirmKillSession(TerminalSession terminalSession) {
         new AlertDialog.Builder(mActivity)
             .setMessage(R.string.title_confirm_kill_session)
-            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                terminalSession.finishIfRunning();
-                mActivity.getTermuxTerminalSessionClient().removeFinishedSession(terminalSession);
-            })
+            .setPositiveButton(android.R.string.yes, (dialog, which) ->
+                mActivity.getTermuxTerminalSessionClient().killAndRemoveSession(terminalSession))
             .setNegativeButton(android.R.string.no, null)
             .show();
     }
